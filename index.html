@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RayenExExch – Premium Gaming Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b0e13; --surface:#111520; --card:#161c28; --border:#1e2a3a;
+  --accent:#f0b429; --accent2:#d97706; --green:#22c55e; --red:#ef4444;
+  --blue:#3b82f6; --text:#f1f5f9; --muted:#64748b; --muted2:#94a3b8;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+input,button{font-family:'Inter',sans-serif;}
+
+/* ===== LOGIN PAGE ===== */
+#loginPage{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(240,180,41,0.06),transparent 70%),var(--bg);
+  padding:20px;
+}
+.login-box{
+  width:100%;max-width:420px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:36px 32px;
+  box-shadow:0 0 60px rgba(240,180,41,0.05),0 32px 64px rgba(0,0,0,0.6);
+  animation:slideUp .4s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.lb-logo{text-align:center;margin-bottom:28px;}
+.lb-logo img{width:260px;max-width:90%;filter:drop-shadow(0 4px 16px rgba(240,180,41,0.35));}
+.lb-title{font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:4px;}
+.lb-sub{font-size:0.78rem;color:var(--muted2);text-align:center;margin-bottom:24px;}
+.tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:22px;}
+.tab{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);font-size:0.84rem;font-weight:600;cursor:pointer;border-radius:7px;transition:all .25s;}
+.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:0.65rem;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+.field input{
+  width:100%;padding:11px 14px;background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;color:var(--text);
+  font-size:0.9rem;outline:none;transition:all .25s;
+}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,180,41,0.1);}
+.submit-btn{
+  width:100%;padding:13px;border:none;border-radius:10px;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-size:0.9rem;font-weight:800;letter-spacing:.5px;
+  transition:all .25s;margin-top:4px;
+}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(240,180,41,0.3);}
+.err-msg{color:var(--red);font-size:0.75rem;text-align:center;margin-top:10px;padding:8px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:7px;display:none;}
+.practice-note{background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 14px;font-size:0.72rem;color:var(--green);text-align:center;margin-bottom:18px;}
+
+/* ===== MAIN APP ===== */
+#appPage{display:none;flex-direction:column;min-height:100vh;}
+
+/* TOP NAV */
+.topnav{
+  height:54px;background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;position:sticky;top:0;z-index:100;
+}
+.tn-logo img{height:36px;filter:drop-shadow(0 2px 6px rgba(240,180,41,0.3));}
+.tn-right{display:flex;align-items:center;gap:10px;}
+.bal-chip{display:flex;align-items:center;gap:6px;background:rgba(240,180,41,0.08);border:1px solid rgba(240,180,41,0.2);border-radius:8px;padding:6px 12px;}
+.bal-val{font-size:0.9rem;font-weight:700;color:var(--accent);}
+.user-chip{display:flex;align-items:center;gap:7px;cursor:pointer;}
+.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:800;color:#000;}
+.logout-btn{padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:0.72rem;cursor:pointer;transition:all .2s;}
+.logout-btn:hover{border-color:var(--red);color:var(--red);}
+
+/* BOTTOM NAV */
+.bottomnav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);border-top:1px solid var(--border);
+  display:flex;z-index:100;
+}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;cursor:pointer;transition:all .15s;color:var(--muted);font-size:0.6rem;gap:3px;}
+.bn-item.active{color:var(--accent);}
+.bn-icon{font-size:1.3rem;}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding-bottom:70px;}
+.page{display:none;}
+.page.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO BANNER */
+.hero{
+  background:linear-gradient(135deg,#111825,#1a2035);
+  padding:20px 16px;border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(240,180,41,0.08),transparent 70%);}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:var(--muted2);font-size:0.8rem;margin-top:4px;}
+.hero-stats{display:flex;gap:20px;margin-top:14px;}
+.hs{text-align:center;}
+.hs-v{font-size:1.1rem;font-weight:700;color:var(--accent);}
+.hs-l{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+
+/* TICKER */
+.ticker{background:var(--card);border-bottom:1px solid var(--border);padding:7px 16px;display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;}
+.tick{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:0.72rem;}
+.tick-up{color:var(--green);}
+.tick-down{color:var(--red);}
+
+/* SECTION */
+.section{padding:16px;}
+.sec-title{font-size:0.72rem;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* GAME GRID */
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(min-width:480px){.game-grid{grid-template-columns:repeat(4,1fr);}}
+.game-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;cursor:pointer;transition:all .2s;
+}
+.game-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.3);}
+.gc-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#13192a,#1a2035);position:relative;}
+.gc-tag{position:absolute;top:6px;left:6px;padding:2px 7px;border-radius:4px;font-size:0.55rem;font-weight:700;text-transform:uppercase;}
+.tag-hot{background:var(--red);color:#fff;}
+.tag-new{background:var(--blue);color:#fff;}
+.tag-live{background:var(--green);color:#fff;}
+.gc-info{padding:8px 10px;}
+.gc-name{font-size:0.78rem;font-weight:600;}
+.gc-sub{font-size:0.62rem;color:var(--muted);}
+
+/* PROFILE PAGE */
+.profile-header{background:linear-gradient(135deg,#111825,#1a2035);padding:24px 16px;text-align:center;border-bottom:1px solid var(--border);}
+.prof-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#000;margin:0 auto 12px;}
+.prof-name{font-size:1.1rem;font-weight:700;}
+.prof-id{font-size:0.72rem;color:var(--muted);margin-top:3px;}
+.stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px;}
+.stat-c{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat-v{font-size:1.2rem;font-weight:700;}
+.stat-l{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+
+/* DAILY BONUS */
+.daily-card{margin:16px;background:linear-gradient(135deg,rgba(34,197,94,0.08),var(--card));border:1px solid rgba(34,197,94,0.25);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px;}
+.dc-icon{font-size:2rem;}
+.dc-info{flex:1;}
+.dc-title{font-size:0.88rem;font-weight:700;}
+.dc-sub{font-size:0.72rem;color:var(--muted2);margin-top:2px;}
+.dc-btn{padding:9px 18px;background:linear-gradient(135deg,var(--green),#16a34a);border:none;border-radius:8px;color:#fff;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.dc-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* HISTORY */
+.hist-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(30,42,58,0.5);}
+.hi-game{font-size:1.4rem;width:36px;text-align:center;}
+.hi-info{flex:1;}
+.hi-name{font-size:0.82rem;font-weight:600;}
+.hi-time{font-size:0.65rem;color:var(--muted);}
+.hi-amt{font-weight:700;font-size:0.88rem;}
+
+/* GAME MODAL */
+.game-modal{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;display:none;flex-direction:column;}
+.game-modal.open{display:flex;}
+.gm-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.gm-title{font-size:0.9rem;font-weight:700;}
+.gm-close{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:7px;color:var(--text);cursor:pointer;font-size:0.8rem;}
+.gm-body{flex:1;overflow:hidden;}
+.gm-body iframe{width:100%;height:100%;border:none;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:10px 20px;display:none;z-index:9999;font-size:0.82rem;font-weight:600;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+
+/* LOADING */
+.loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:500;gap:16px;}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA0i6wuBdRZ4rPTnc5QGR2inkzeRIr6uzM",
+  authDomain: "rayenex-9881e.firebaseapp.com",
+  projectId: "rayenex-9881e",
+  storageBucket: "rayenex-9881e.firebasestorage.app",
+  messagingSenderId: "921985769600",
+  appId: "1:921985769600:web:92816d1fafc315c0370665"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let userData = null;
+let activeTab = 'login';
+
+// ===== AUTH STATE =====
+onAuthStateChanged(auth, async (user) => {
+  document.getElementById('loadingScreen').style.display = 'none';
+  if (user) {
+    currentUser = user;
+    await loadUserData(user.uid);
+    showApp();
+  } else {
+    showLogin();
+  }
+});
+
+// ===== LOAD USER DATA =====
+async function loadUserData(uid) {
+  const docRef = doc(db, 'users', uid);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    userData = docSnap.data();
+  } else {
+    userData = { coins: 5000, games: 0, wins: 0, joinedAt: new Date().toISOString() };
+    await setDoc(docRef, userData);
+  }
+  updateUI();
+}
+
+function updateUI() {
+  if (!userData) return;
+  document.getElementById('balVal').textContent = '🪙 ' + (userData.coins || 0).toLocaleString();
+  document.getElementById('profName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
+  document.getElementById('profId').textContent = 'ID: ' + currentUser.uid.substring(0,8).toUpperCase();
+  document.getElementById('profAv').textContent = (currentUser.email || 'U')[0].toUpperCase();
+  document.getElementById('profCoins').textContent = '🪙 ' + (userData.coins || 0).toLocaleString();
+  document.getElementById('profGames').textContent = userData.games || 0;
+  document.getElementById('profWins').textContent = userData.wins || 0;
+  document.getElementById('userAvText').textContent = (currentUser.email || 'U')[0].toUpperCase();
+}
+
+// ===== LOGIN =====
+window.switchTab = (tab) => {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tab + 'Tab').classList.add('active');
+  document.getElementById('loginFields').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('registerFields').style.display = tab === 'register' ? 'block' : 'none';
+};
+
+window.doAuth = async () => {
+  const email = document.getElementById('emailInput').value.trim();
+  const pass = document.getElementById('passInput').value;
+  const err = document.getElementById('errMsg');
+
+  if (!email || !pass) { showErr('Email aur password zaroor bharo!'); return; }
+
+  try {
+    if (activeTab === 'login') {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } else {
+      const username = document.getElementById('usernameInput').value.trim();
+      if (!username) { showErr('Username zaroor bharo!'); return; }
+      const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+      await setDoc(doc(db, 'users', userCred.user.uid), {
+        username, email, coins: 5000, games: 0, wins: 0,
+        joinedAt: serverTimestamp()
+      });
+    }
+    err.style.display = 'none';
+  } catch(e) {
+    const msgs = {
+      'auth/user-not-found': '❌ User nahi mila!',
+      'auth/wrong-password': '❌ Password galat hai!',
+      'auth/email-already-in-use': '❌ Email pehle se registered hai!',
+      'auth/weak-password': '❌ Password 6+ characters ka hona chahiye!',
+      'auth/invalid-email': '❌ Email sahi nahi hai!',
+      'auth/invalid-credential': '❌ Email ya password galat hai!'
+    };
+    showErr(msgs[e.code] || '❌ Kuch galat hua: ' + e.message);
+  }
+};
+
+function showErr(msg) {
+  const err = document.getElementById('errMsg');
+  err.textContent = msg;
+  err.style.display = 'block';
+}
+
+window.doLogout = async () => {
+  await signOut(auth);
+};
+
+// ===== DAILY BONUS =====
+window.claimBonus = async () => {
+  if (!currentUser) return;
+  const today = new Date().toDateString();
+  if (userData.lastBonus === today) { showToast('✅ Aaj ka bonus le chuke ho!'); return; }
+  userData.coins = (userData.coins || 0) + 500;
+  userData.lastBonus = today;
+  await updateDoc(doc(db, 'users', currentUser.uid), { coins: userData.coins, lastBonus: today });
+  updateUI();
+  showToast('🎁 +500 coins bonus mila!');
+};
+
+// ===== NAVIGATION =====
+window.showPage = (page) => {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(page + 'Page').classList.add('active');
+  document.getElementById('bn' + page.charAt(0).toUpperCase() + page.slice(1)).classList.add('active');
+};
+
+window.openGame = (game) => {
+  const modal = document.getElementById('gameModal');
+  document.getElementById('gameTitle').textContent = game;
+  modal.classList.add('open');
+};
+
+window.closeGame = () => {
+  document.getElementById('gameModal').classList.remove('open');
+};
+
+function showLogin() {
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('appPage').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appPage').style.display = 'flex';
+  showPage('home');
+  updateUI();
+}
+
+window.showToast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.display = 'none', 3000);
+};
+</script>
+
+<!-- LOADING -->
+<div id="loadingScreen" class="loading">
+  <div class="spinner"></div>
+  <div style="font-size:0.8rem;color:var(--muted)">Loading RayenExExch...</div>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" style="display:none">
+  <div class="login-box">
+    <div class="lb-logo">
+      <img src="https://i.imgur.com/placeholder.png" alt="RayenExExch"
+           onerror="this.style.display='none';document.getElementById('textLogo').style.display='block'">
+      <div id="textLogo" style="display:none;font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:3px;background:linear-gradient(135deg,#f0b429,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">RayenExExch</div>
+    </div>
+    <div class="practice-note">🎮 Practice Platform – Free Coins Milenge!</div>
+    <div class="tabs">
+      <button class="tab active" id="loginTab" onclick="switchTab('login')">Login</button>
+      <button class="tab" id="registerTab" onclick="switchTab('register')">Register</button>
+    </div>
+    <div id="loginFields">
+      <div class="field"><label>Email</label><input id="emailInput" type="email" placeholder="aapka@email.com"></div>
+      <div class="field"><label>Password</label><input id="passInput" type="password" placeholder="••••••••"></div>
+    </div>
+    <div id="registerFields" style="display:none">
+      <div class="field"><label>Username</label><input id="usernameInput" type="text" placeholder="aapka username"></div>
+      <div class="field"><label>Email</label><input id="emailInput2" type="email" placeholder="aapka@email.com" oninput="document.getElementById('emailInput').value=this.value"></div>
+      <div class="field"><label>Password</label><input id="passInput2" type="password" placeholder="••••••••" oninput="document.getElementById('passInput').value=this.value"></div>
+    </div>
+    <button class="submit-btn" onclick="doAuth()">🚀 Continue</button>
+    <div class="err-msg" id="errMsg"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appPage" style="display:none">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="tn-logo">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;background:linear-gradient(135deg,#f0b429,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">RayenExExch</span>
+    </div>
+    <div class="tn-right">
+      <div class="bal-chip"><span class="bal-val" id="balVal">🪙 5,000</span></div>
+      <div class="user-chip">
+        <div class="user-av" id="userAvText">U</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- HOME PAGE -->
+    <div class="page" id="homePage">
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-title">RayenExExch</div>
+        <div class="hero-sub">Premium Gaming Practice Platform</div>
+        <div class="hero-stats">
+          <div class="hs"><div class="hs-v">9+</div><div class="hs-l">Games</div></div>
+          <div class="hs"><div class="hs-v">Since 2010</div><div class="hs-l">Trusted</div></div>
+          <div class="hs"><div class="hs-v">24/7</div><div class="hs-l">Live</div></div>
+        </div>
+      </div>
+
+      <!-- Ticker -->
+      <div class="ticker">
+        <div class="tick">✈️ Aviator <span class="tick-up">5.24×</span></div>
+        <div class="tick">💣 Mines <span class="tick-up">3.10×</span></div>
+        <div class="tick">🎡 Roulette <span class="tick-down">0×</span></div>
+        <div class="tick">🎰 Slots <span class="tick-up">7.77×</span></div>
+        <div class="tick">📈 Crash <span class="tick-up">2.40×</span></div>
+        <div class="tick">🐔 Chicken <span class="tick-up">1.74×</span></div>
+      </div>
+
+      <!-- Daily Bonus -->
+      <div style="padding:16px 16px 0">
+        <div class="daily-card">
+          <div class="dc-icon">🎁</div>
+          <div class="dc-info">
+            <div class="dc-title">Daily Bonus</div>
+            <div class="dc-sub">Har roz +500 coins FREE!</div>
+          </div>
+          <button class="dc-btn" onclick="claimBonus()">Claim</button>
+        </div>
+      </div>
+
+      <!-- Games -->
+      <div class="section">
+        <div class="sec-title">🎮 All Games</div>
+        <div class="game-grid">
+          <div class="game-card" onclick="openGame('Aviator')">
+            <div class="gc-thumb">✈️<div class="gc-tag tag-hot">HOT</div></div>
+            <div class="gc-info"><div class="gc-name">Aviator</div><div class="gc-sub">Crash Game</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Mines')">
+            <div class="gc-thumb">💣<div class="gc-tag tag-live">LIVE</div></div>
+            <div class="gc-info"><div class="gc-name">Mines</div><div class="gc-sub">Grid Game</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Roulette')">
+            <div class="gc-thumb">🎡</div>
+            <div class="gc-info"><div class="gc-name">Roulette</div><div class="gc-sub">Casino</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Slots')">
+            <div class="gc-thumb">🎰<div class="gc-tag tag-hot">HOT</div></div>
+            <div class="gc-info"><div class="gc-name">Slots</div><div class="gc-sub">Jackpot</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Crash')">
+            <div class="gc-thumb">📈</div>
+            <div class="gc-info"><div class="gc-name">Crash</div><div class="gc-sub">Trading</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Chicken Road')">
+            <div class="gc-thumb">🐔<div class="gc-tag tag-new">NEW</div></div>
+            <div class="gc-info"><div class="gc-name">Chicken</div><div class="gc-sub">Road Game</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Teen Patti')">
+            <div class="gc-thumb">🃏</div>
+            <div class="gc-info"><div class="gc-name">Teen Patti</div><div class="gc-sub">Cards</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Tower')">
+            <div class="gc-thumb">🏗️</div>
+            <div class="gc-info"><div class="gc-name">Tower</div><div class="gc-sub">Climb</div></div>
+          </div>
+          <div class="game-card" onclick="openGame('Plinko')">
+            <div class="gc-thumb">🎯</div>
+            <div class="gc-info"><div class="gc-name">Plinko</div><div class="gc-sub">Drop</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="profilePage">
+      <div class="profile-header">
+        <div class="prof-av" id="profAv">U</div>
+        <div class="prof-name" id="profName">Player</div>
+        <div class="prof-id" id="profId">ID: --------</div>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-c"><div class="stat-v" style="color:var(--accent);font-size:1rem" id="profCoins">🪙 0</div><div class="stat-l">Coins</div></div>
+        <div class="stat-c"><div class="stat-v" style="color:var(--blue)" id="profGames">0</div><div class="stat-l">Games</div></div>
+        <div class="stat-c"><div class="stat-v" style="color:var(--green)" id="profWins">0</div><div class="stat-l">Wins</div></div>
+      </div>
+      <div style="padding:0 16px">
+        <div class="daily-card">
+          <div class="dc-icon">🎁</div>
+          <div class="dc-info">
+            <div class="dc-title">Daily Bonus</div>
+            <div class="dc-sub">+500 coins har roz!</div>
+          </div>
+          <button class="dc-btn" onclick="claimBonus()">Claim</button>
+        </div>
+      </div>
+      <div class="section">
+        <div class="sec-title">📋 Recent Games</div>
+        <div style="text-align:center;color:var(--muted);padding:30px;font-size:0.82rem">Koi game nahi khela abhi</div>
+      </div>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div class="page" id="historyPage">
+      <div class="section">
+        <div class="sec-title">📊 Game History</div>
+        <div style="text-align:center;color:var(--muted);padding:40px;font-size:0.82rem">Game khelne ke baad history yahan dikhegi</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottomnav">
+    <div class="bn-item active" id="bnHome" onclick="showPage('home')">
+      <span class="bn-icon">🏠</span><span>Home</span>
+    </div>
+    <div class="bn-item" id="bnProfile" onclick="showPage('profile')">
+      <span class="bn-icon">👤</span><span>Profile</span>
+    </div>
+    <div class="bn-item" id="bnHistory" onclick="showPage('history')">
+      <span class="bn-icon">📋</span><span>History</span>
+    </div>
+  </nav>
+
+</div>
+
+<!-- GAME MODAL -->
+<div class="game-modal" id="gameModal">
+  <div class="gm-header">
+    <div class="gm-title" id="gameTitle">Game</div>
+    <button class="gm-close" onclick="closeGame()">✕ Close</button>
+  </div>
+  <div class="gm-body">
+    <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:0.85rem;flex-direction:column;gap:12px">
+      <div style="font-size:3rem">🎮</div>
+      <div>Game loading...</div>
+      <div style="font-size:0.72rem;color:var(--muted)">Coming soon!</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+</body>
+</html>
